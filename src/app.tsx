@@ -31,6 +31,11 @@ const App: Component = () => {
               Stargazers
             </Link>
           </li>
+          <li class="py-2 px-4">
+            <Link href="/store" class="no-underline hover:underline">
+              Store
+            </Link>
+          </li>
 
           <li class="text-sm flex items-center space-x-1 ml-auto">
             <span>URL:</span>
