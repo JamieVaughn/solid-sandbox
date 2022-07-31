@@ -18,12 +18,17 @@ export const routes: RouteDefinition[] = [
   {
     path: '/stargazers',
     component: lazy(() => import('./pages/stargazers')),
-    data: AboutData,
   },
   {
     path: '/store',
     component: lazy(() => import('./pages/store')),
-    data: AboutData,
+  },
+  {
+    path: '/detail',
+    component: lazy(() => import('./pages/store')),
+    children: [
+      {path: '/:id', component: lazy(() => import('./components/productDetail'))},
+    ]
   },
   {
     path: '**',

@@ -1,18 +1,15 @@
 import { Component, For, createMemo } from "solid-js";
-import { Link } from "solid-app-router";
-import type { Product } from "../type/product";
+import { Link, Outlet } from "solid-app-router";
 
-const Header: Component<{
-  cart: () => Product[];
-  onClearCart: () => void;
-  search: () => string;
-  onSetSearch: (search: string) => void;
-}> = ({ cart, onClearCart, search, onSetSearch }) => {
+import { cart, search, onClearCart, onSetSearch } from "../stores/storeStore";
+
+const Header: Component<Component> = () => {
   const total = createMemo(
     () => cart().reduce((total, p) => total + p.price, 0),
   );
 
   return (
+    <>
     <div class="bg-blue-900 text-white flex flex-row w-full py-4">
       <div class="text-2xl px-10 py-2">
         <Link href="/">
@@ -64,6 +61,8 @@ const Header: Component<{
         <span class="font-bold text-xl">{(cart() ?? []).length}</span>
       </div>
     </div>
+    <Outlet />
+    </>
   );
 };
 
