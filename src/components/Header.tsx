@@ -1,4 +1,5 @@
 import { Component, For, createMemo } from "solid-js";
+import { Link } from "solid-app-router";
 import type { Product } from "../type/product";
 
 const Header: Component<{
@@ -14,10 +15,10 @@ const Header: Component<{
   return (
     <div class="bg-blue-900 text-white flex flex-row w-full py-4">
       <div class="text-2xl px-10 py-2">
-        <a href="/">
+        <Link href="/">
           <i class="fas fa-donate mr-2"></i>
           Simple eCommerce
-        </a>
+        </Link>
       </div>
       <div class="flex-grow">
         <input
@@ -60,7 +61,7 @@ const Header: Component<{
           </div>
         </span>
         <i class="fas fa-shopping-cart mr-2"></i>
-        <span class="font-bold text-xl">{(cart ?? []).length}</span>
+        <span class="font-bold text-xl">{(cart() ?? []).length}</span>
       </div>
     </div>
   );
