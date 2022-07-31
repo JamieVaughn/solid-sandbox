@@ -3,15 +3,18 @@ import { createMutable } from 'solid-js/store'
 import { Product } from '../type/product'
 
 export const cartMutable = createMutable({
-  products: [] as Product[],
+  products: JSON.parse(window.localStorage.getItem('cart') || '[]'), //[] as Product[],
   get total() {
-    return this.products.reduce((total, product) => total + product, 0)
+    return this.products.reduce((total, product) => total + product.price, 0)
   },
   onAddToCart(product: Product) {
     this.products.push(product)
+    window.localStorage.setItem('cart', JSON.stringify(this.products))
   },
   clearCart() {
     this.products = []
+    window.localStorage.setItem('cart', JSON.stringify('[]'))
+
   }
 })
 

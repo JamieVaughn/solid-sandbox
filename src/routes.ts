@@ -23,12 +23,16 @@ export const routes: RouteDefinition[] = [
     path: '/store',
     component: lazy(() => import('./pages/store')),
   },
+  // {
+  //   path: '/detail',
+  //   component: lazy(() => import('./pages/store')),
+  //   children: [
+  //     {path: '/:id', component: lazy(() => import('./components/productDetail'))},
+  //   ]
+  // },
   {
-    path: '/detail',
-    component: lazy(() => import('./pages/store')),
-    children: [
-      {path: '/:id', component: lazy(() => import('./components/productDetail'))},
-    ]
+    path: '/detail/:id',
+    component: lazy(() => import('./components/productDetail')),
   },
   {
     path: '**',

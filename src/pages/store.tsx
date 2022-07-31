@@ -9,19 +9,13 @@ const Store: Component = () => {
   return (
     <div>
       <Header />
-      <Outlet />
-      {/* <Routes>
-        <Route path='/' element={<StorePage />} />
-        <Route path='/detail/:id' element={<ProductDetail />} />
-      </Routes> */}
-    </div>
-  )
-}
-
-<Routes>
+      <Routes>
         <Route path='/' element={<StorePage />} />
         <Route path='/detail/:id' element={<ProductDetail />} />
       </Routes>
+    </div>
+  )
+}
 
 
 export default Store

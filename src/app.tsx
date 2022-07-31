@@ -2,17 +2,19 @@ import type { Component } from 'solid-js';
 import { Link, useRoutes, Route, Routes, useLocation, Outlet } from 'solid-app-router';
 
 import { routes } from './routes';
-import Home from './pages/home';
-import About from './pages/about';
-import Stargazers from './pages/stargazers';
-import NotFound from './errors/404';
-import StorePage from './components/StorePage';
-import ProductDetail from './pages/store/[id]';
-import Header from './components/Header';
+// import Home from './pages/home';
+// import About from './pages/about';
+// import Stargazers from './pages/stargazers';
+// import NotFound from './errors/404';
+// import StorePage from './components/StorePage';
+// import ProductDetail from './pages/store/[id]';
+// import Header from './components/Header';
+// import './index.css'
+
 
 const App: Component = () => {
   const location = useLocation();
-  // const Route = useRoutes(routes);
+  const Route = useRoutes(routes);
 
   return (
     <>
@@ -57,17 +59,7 @@ const App: Component = () => {
       </nav>
 
       <main>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/stargazers' element={<Stargazers />} />
-          <Route path='/error' element={<NotFound />} />
-          <Route path='/store' element={<Header ><Outlet /></Header>} >
-            <Route path='/' element={<StorePage />} />
-            <Route path='/:id' element={<ProductDetail />} />
-          </Route>
-          <Route path='/detail/:id' element={<ProductDetail />} />
-        </Routes>
+        <Route />
       </main>
     </>
   );
