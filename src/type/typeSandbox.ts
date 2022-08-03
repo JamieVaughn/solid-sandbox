@@ -1,3 +1,5 @@
+
+// Tip #1: create record type from object literal
 export const fruitCounts = {
   apple: 3,
   orange: 5,
@@ -23,10 +25,25 @@ const SingelFruitCount: NewSingleFruitCount = {
   orange: 1,
 }
 
+// Tip #2: convert union type to another union type with in keyword
 
+export type Entity = 
+| { type: "user" }
+| { type: "post" }
+| { type: "comment" }
 
+// type EntityWithId = 
+// | { userId: string, type: "user" }
+// | { postId: string, type: "post" }
+// | { commentId: string, type: "comment" }
 
+type EntityWithId = {
+  [EntityType in Entity["type"]]: {
+    type: EntityType
+  } & Record<`${EntityType}Id`, string>
+}[Entity["type"]]
 
-
-
-export {}
+const result: EntityWithId = {
+  type: "comment",
+  commentId: "123",
+}
