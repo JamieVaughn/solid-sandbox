@@ -19,6 +19,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.2",
     "solid-app-router": "^0.4.1",
-    "solid-js": "^1.4.7"
+    "solid-js": "^1.4.7",
+    "ts-toolbelt": "^9.6.0"
   }
 }
