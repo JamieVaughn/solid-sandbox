@@ -136,6 +136,7 @@ const objectKeys = <Obj>(obj: Obj): (keyof Obj)[] => {
   return Object.keys(obj) as (keyof Obj)[]
 }
 
-Object.keys(myObject).forEach((key) => {
+// Object.keys(myObject).forEach((key) => {
+objectKeys(myObject).forEach((key) => {
   console.log(myObject[key])
 })
