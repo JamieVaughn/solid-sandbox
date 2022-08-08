@@ -48,6 +48,7 @@ const result: EntityWithId = {
   commentId: "123",
 }
 
+import { JSX } from 'solid-js/web/types/jsx'
 // Tip #3: Union merge query params at the type level
 import { String, Union } from 'ts-toolbelt'
 
@@ -140,3 +141,53 @@ const objectKeys = <Obj>(obj: Obj): (keyof Obj)[] => {
 objectKeys(myObject).forEach((key) => {
   console.log(myObject[key])
 })
+
+// Tip #7.5: type parameters for passing into string literals
+
+type Carb = 'rice' | 'bread' | 'pasta'
+type Protein = 'beans' | 'chicken' | 'beef'
+
+type Meal = `${Carb} and ${Protein}`
+
+const meal: Meal = 'rice and beans'
+
+
+// Tip #8: Use generics with functions (or JSX components)
+interface TableProps<TItem> {
+  items: TItem[];
+  renderItem: (item: TItem) => JSX.Element;
+}
+
+export function Table<TItem>(props: TableProps<TItem>) {
+  return null
+}
+
+const Component = () => {
+  return Table( 
+  // return Table<{id: string, name: string, age: number}>( // <- optionally can pass in type parameters to specify the generic type
+   {
+      items: [
+        { 
+          id: '1',
+          name: 'John',
+          age: 32
+        },
+      ],
+      renderItem: (item) => item.age
+   }
+  )
+}
+
+
+// Tip #9: Currying with Generic types
+
+export const makeKeyRemover = 
+  <Key extends string>(keys: Key[]) => 
+  <Obj>(obj: Obj): Omit<Obj, Key> => ({} as any)
+
+const keyRemover = makeKeyRemover(['a', 'b'])
+
+const newObject = keyRemover({a: 1, b: 2, c: 3})
+
+// newObject.a // Error: a not available (same for b)
+newObject.c
