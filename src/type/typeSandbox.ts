@@ -243,3 +243,33 @@ export type DeepPartial<Thing> = Thing extends Function
   const post1: Partial<Post> = {
     id: '1'
   }
+
+
+  // Tip #12 - "& {}"" prevents 'type literal widening' via 'Apparent Type' trick
+  // https://github.com/microsoft/TypeScript-New-Handbook/blob/master/reference/Widening-and-Narrowing.md
+
+  export type LooseIconSize = 'sm' | 'xs' | Omit<string, 'sm' | 'xs'>; // <- mistaken use of <Omit>
+  export type IconSize = 'sm' | 'xs' | (string & {});
+  // export type IconSize = 'sm' | 'xs' | (String); // String also works becuase it's the String Apparent Type
+  export type ContainsIconSize = 'sm' | 'xs' | (`xs${string}` & Record<never, never>); // Record same as {}
+
+  type Obj = {
+    a: number;
+    b: number;
+  }
+
+  type NewObj = Omit<Obj, 'a'> // usually Omit is for objects & keys
+  const _obj: NewObj = {
+    b: 1 // don't have 'a' key
+  }
+
+  const iconSize0: IconSize = 'sm'
+  const iconSize1: IconSize = 'xs'
+
+
+  const iconSize2: ContainsIconSize = 'xs-secondary'
+  // @ts-expect-error
+  const iconSize3: ContainsIconSize = 'sm-secondary'
+
+// Tip #13 - Turn a module into a type
+
