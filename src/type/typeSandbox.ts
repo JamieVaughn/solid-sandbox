@@ -206,9 +206,40 @@ export const deepEqualCompare = <Arg>(a: CheckForBadArgs<Arg>, b: CheckForBadArg
 
 deepEqualCompare(1, 1)
 // Error: You cannot compare two arrays using deepEqualCompare
+// @ts-expect-error
 deepEqualCompare([], []) 
 
 
 // Tip #11: deep partials
 
+export type DeepPartial<Thing> = Thing extends Function
+  ? Thing: Thing extends Array<infer InferredArrayMember>
+  ? DeepPartialArray<InferredArrayMember> 
+  : Thing extends object
+  ? DeepPartialObject<Thing>
+  : Thing | undefined
 
+  interface DeepPartialArray<Thing> extends Array<DeepPartial<Thing>> {}
+
+  type DeepPartialObject<Thing> = {
+    [Key in keyof Thing]?: DeepPartial<Thing[Key]>;
+  }
+
+  interface Post {
+    id: string;
+    comments: { value: string }[];
+    meta: {
+      name: string;
+      description: string;
+    };
+  }
+
+  // DeepPartial provides a resursively typed partial object
+  const post: DeepPartial<Post> = {
+    id: '1'
+  }
+
+  // the TS provided type: <Partial>, provides a shallow partial of an object
+  const post1: Partial<Post> = {
+    id: '1'
+  }
