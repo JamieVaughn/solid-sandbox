@@ -272,4 +272,13 @@ export type DeepPartial<Thing> = Thing extends Function
   const iconSize3: ContainsIconSize = 'sm-secondary'
 
 // Tip #13 - Turn a module into a type
-
+export type ActionModule = typeof import('./constants')
+const actionModule: ActionModule = {
+  ADD_TODO: 'ADD_TODO',
+  REMOVE_TODO: 'REMOVE_TODO',
+  EDIT_TODO: 'EDIT_TODO',
+  // COMPLETE_TODO: 'COMPLETE_TODO', // type error, but adding it to './constants.ts' would fix it
+}
+// export type Action = "ADD_TODO" | "REMOVE_TODO" | "EDIT_TODO";
+// recreate the above Action type in a DRY way below:
+export type Action = ActionModule[keyof ActionModule]
