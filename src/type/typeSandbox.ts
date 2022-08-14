@@ -282,3 +282,45 @@ const actionModule: ActionModule = {
 // export type Action = "ADD_TODO" | "REMOVE_TODO" | "EDIT_TODO";
 // recreate the above Action type in a DRY way below:
 export type Action = ActionModule[keyof ActionModule]
+
+
+// more tips: 'as' clause in mapped types
+
+const sym = Symbol();
+type Test = {
+  [name: string]: any
+  [name: number]: any
+  [name: symbol]: any
+  value: string
+  member: string
+  0: boolean
+  [sym]: Date
+}
+
+type KnownKeys<T> = {
+  [P in keyof T as
+    string extends P ? never :
+    number extends P ? never :
+    symbol extends P ? never :
+    P
+  ] : T[P]
+}
+
+type _X = KnownKeys<Test>
+
+
+// more tips: get property from object
+
+function getFromObject<TObj, TKey extends keyof TObj>(
+  myObject: TObj, 
+  myKey: TKey
+  ): TObj[TKey] {
+  return {} as any
+}
+
+const obj3 = {
+  a: 1,
+  b: 'string',
+}
+
+const _results = getFromObject(obj3, 'b') // results takes on type of obj3 property
