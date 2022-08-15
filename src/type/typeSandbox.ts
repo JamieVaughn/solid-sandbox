@@ -50,7 +50,7 @@ const result: EntityWithId = {
 
 import { JSX } from 'solid-js/web/types/jsx'
 // Tip #3: Union merge query params at the type level
-import { String, Union } from 'ts-toolbelt'
+import { A, String, Union } from 'ts-toolbelt'
 
 const query = `/home?a=wow&b=woah`
 
@@ -324,3 +324,18 @@ const obj3 = {
 }
 
 const _results = getFromObject(obj3, 'b') // results takes on type of obj3 property
+
+// more tips: advanced generics - the infer keyword
+
+type Animal<Noise> = {
+  type: 'animal';
+  noise: Noise;
+}
+
+type Cat = Animal<"moew">;
+type Dog = Animal<"woof">;
+
+// type AnimalNoise<TAnimal extends Animal<any>> = TAnimal['noise'] // shorter way to do below, but not as generalizable
+type AnimalNoise<TAnimal extends Animal<any>> = TAnimal extends Animal<infer TNoise> ? TNoise : never;
+
+type CatNoise = AnimalNoise<Cat> // "moew"
