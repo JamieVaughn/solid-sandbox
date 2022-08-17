@@ -20,6 +20,14 @@ export const routes: RouteDefinition[] = [
     component: lazy(() => import('./pages/stargazers')),
   },
   {
+    path: '/repos',
+    component: lazy(() => import('./pages/repos')),
+  },
+  {
+    path: '/savedrepos',
+    component: lazy(() => import('./components/SavedRepos')),
+  },
+  {
     path: '/store',
     component: lazy(() => import('./pages/store')),
   },

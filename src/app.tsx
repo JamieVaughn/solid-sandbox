@@ -41,6 +41,16 @@ const App: Component = () => {
             </Link>
           </li>
           <li class="py-2 px-4">
+            <Link href="/repos" class="no-underline hover:underline">
+              Repos
+            </Link>
+          </li>
+          <li class="py-2 px-4">
+            <Link href="/savedrepos" class="no-underline hover:underline">
+              Saved Repos
+            </Link>
+          </li>
+          <li class="py-2 px-4">
             <Link href="/store" class="no-underline hover:underline">
               Store
             </Link>
