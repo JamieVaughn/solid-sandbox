@@ -1,5 +1,6 @@
 import type { Component } from 'solid-js';
 import { Link, useRoutes, Route, Routes, useLocation, Outlet } from 'solid-app-router';
+import { savedRepos } from "./components/SavedRepos";
 
 import { routes } from './routes';
 // import Home from './pages/home';
@@ -47,7 +48,7 @@ const App: Component = () => {
           </li>
           <li class="py-2 px-4">
             <Link href="/savedrepos" class="no-underline hover:underline">
-              Saved Repos
+              Saved Repos ({savedRepos().length})
             </Link>
           </li>
           <li class="py-2 px-4">
