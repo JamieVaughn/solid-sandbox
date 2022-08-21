@@ -29,7 +29,7 @@ function Stargazers() {
       .then(data => data.filter(item => item.name.toLowerCase().match(keyword().toLowerCase())))
   })
   return (
-  <div class='container'>
+  <div class='container p-12'>
     <h1>Stargazers</h1>
     <input type='text' onKeyUp={e => setKeyword(e.currentTarget.value)} />
     <Show when={keyword()} fallback={<p>Cast members await being discovered.</p>}>

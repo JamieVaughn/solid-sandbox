@@ -7,7 +7,8 @@ const Canvas: Component<{}> = (props) => {
   const [painting, setPainting] = createSignal(false);
   const [dim, setDim] = createSignal({width: 800, height: 500});
   const [color, setColor] = createSignal('black')
-  const [lineWidth, setLineWidth] = createSignal(11)
+  const [opacity, setOpacity] = createSignal(1)
+  const [lineWidth, setLineWidth] = createSignal(10)
   let canvas
   let ctx
   const handleGlobalMouseDown = (e) => setMousedown(true)
@@ -41,6 +42,7 @@ const Canvas: Component<{}> = (props) => {
 
   createEffect(() => {
     ctx.strokeStyle = color()
+    ctx.globalAlpha = opacity()
   })
 
   onCleanup(() => {
@@ -68,10 +70,6 @@ const Canvas: Component<{}> = (props) => {
     ctx.beginPath()
   }
 
-  createEffect(() => {
-    console.log('painting', painting())
-  })
-
   return (
     <div>
       <h1>Canvas</h1>
@@ -89,10 +87,12 @@ const Canvas: Component<{}> = (props) => {
         onMouseMove={draw}
         />
         <div class="flex flex-col controls">
-          <label for="color">{color()}</label>
+          <label for="color">Color: {color()}</label>
           <input id='color' type="color" class='shrink' onInput={(e) => setColor(e.currentTarget.value)}/>
-          <label for="range">{lineWidth()}</label>
-          <input id='range' type="range" min='1' max='20' onInput={e => setLineWidth(e.currentTarget.value)}/>
+          <label for="range">Opacity: {opacity()}</label>
+          <input id='range' type="range" value='1' min='0' max='1' step='0.01' onInput={e => setOpacity(Number(e.currentTarget.value))}/>
+          <label for="range">Line Width: {lineWidth()}</label>
+          <input id='range' type="range"value='10' min='1' max='20' onInput={e => setLineWidth(Number(e.currentTarget.value))}/>
         </div>
       </div>
     </div>

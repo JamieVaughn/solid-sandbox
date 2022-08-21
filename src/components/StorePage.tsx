@@ -27,7 +27,7 @@ const StorePage: Component = () => {
           <h3 class="title font-bold truncate w-full max-w-full py-2 px-4 text-white">
             {product.title}
           </h3>
-          <div class="bg-white p-3">
+          <div class="bg-white p-3" style={{height: 'calc(100% - 50px)'}}>
             <div class="w-full flex justify-center">
               <img src={product.image} alt={product.title} class="h-32" />
             </div>
@@ -35,7 +35,7 @@ const StorePage: Component = () => {
               <div class="text-lg overflow-ellipsis description">
                 {product.description}
               </div>
-              <div class="flex flex-row mt-2">
+              <div class="flex flex-row mt-2 flex-wrap">
                 <div class="text-md mt-1">{product.category}</div>
                 <div class="text-lg text-right flex-grow justify-end mt-1 mr-4 font-bold">
                   {product.price.toLocaleString("en-US", {
