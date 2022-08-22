@@ -1,5 +1,6 @@
 import {createResource, createSignal, Show} from 'solid-js'
 import { Cast } from '../components/cast'
+import Pagination from '../components/pagination';
 
 export interface CastType {
   id: number;
@@ -34,6 +35,7 @@ function Stargazers() {
     <input type='text' onKeyUp={e => setKeyword(e.currentTarget.value)} />
     <Show when={keyword()} fallback={<p>Cast members await being discovered.</p>}>
       <Cast list={castlist()} keyword={keyword()} />
+      <Pagination pagesBuffer={5} totalPages={10} />
     </Show>
   </div>
   )

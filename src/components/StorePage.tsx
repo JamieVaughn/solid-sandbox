@@ -1,6 +1,7 @@
 import { Component, createMemo, For } from "solid-js";
 import { Link } from "solid-app-router";
 import { products, search, onAddToCart, cartMutable } from "../stores/storeStore";
+import Pagination from "./pagination";
 
 const StorePage: Component = () => {
   const filteredProducts = createMemo(
@@ -17,6 +18,7 @@ const StorePage: Component = () => {
   );
 
   return (
+    <>
     <div class="grid grid-cols-3">
       <For each={filteredProducts()}>
       {(product) => (
@@ -60,6 +62,8 @@ const StorePage: Component = () => {
       )}
       </For>
     </div>
+    <Pagination totalPages={30} />
+    </>
   );
 };
 
