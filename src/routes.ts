@@ -35,6 +35,10 @@ export const routes: RouteDefinition[] = [
     path: '/canvas',
     component: lazy(() => import('./pages/canvas')),
   },
+  {
+    path: '/grid',
+    component: lazy(() => import('./pages/grid')),
+  },
   // {
   //   path: '/detail',
   //   component: lazy(() => import('./pages/store')),
