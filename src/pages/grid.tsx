@@ -5,6 +5,7 @@ const grid: Component<{}> = (props) => {
   let canvas,
     ctx,
     svgEl,
+    input,
     className = 'rect'
   const data = d3.range(5000).map((i) => ({ value: i }))
   let width = 750,
@@ -15,8 +16,8 @@ const grid: Component<{}> = (props) => {
     cellSize = Math.floor((width - 11 * groupSpacing) / 100) - cellSpacing
 
   let colorScale = d3.scaleSequential(d3.interpolateSpectral).domain(d3.extent(data, (d) => d.value))
-  const interpolate = d3.interpolateRgb('crimson', 'dodgerblue')
-  const spectral = d3.scaleDiverging(d3.interpolateSpectral)
+  // const interpolate = d3.scaleSequential(d3.interpolateRgb).domain(d3.extent(data, (d) => d.value))
+  // const spectral = d3.scaleDiverging(d3.interpolateSpectral)
   onMount(() => {
     ctx = canvas.getContext('2d')
     databind(data)
@@ -24,12 +25,11 @@ const grid: Component<{}> = (props) => {
       draw()
       if (elapsed > 300) timer.stop()
     })
-    draw()
+    // draw()
   })
   const databind = (data) => {
     let svg = d3.select(svgEl)
     let join = svg.selectAll(className).data(data)
-    console.log(colorScale(2000), svg, join)
     var enterSel = join
       .enter()
       .append(className)
@@ -54,11 +54,32 @@ const grid: Component<{}> = (props) => {
       .attr('height', cellSize)
       .attr('fillStyle', (d) => {
         // console.log('color', d, i)
-        // return spectral(i)
+        // return spectral(d.value)
         // return interpolate(d.value)
-        return colorScale(d.value)
+        // console.log('data', data, d)
+        return d3.scaleSequential(d3.interpolateSpectral).domain(d3.extent(data, (d) => d.value))
       })
     let exitSel = join.exit().transition().attr('width', 0).attr('height', 0).remove()
+
+    d3.select(input).on('keydown', (e) => {
+      console.log(e)
+      if (e.key === 'Enter') {
+        if (+e.currentTarget.value < 1 || +e.currentTarget.value > 10000) {
+          // If the user goes lower than 1 or higher than 10k...
+          alert('Input out of range')
+          return
+        } else {
+          const array = d3.range(+e.currentTarget.value).map((v, i) => ({ value: i }))
+          console.log(array)
+          databind(array)
+          var t = d3.timer(function (elapsed) {
+            draw()
+            if (elapsed > 300) t.stop()
+          })
+          draw()
+        }
+      }
+    })
   }
 
   const draw = () => {
@@ -77,9 +98,9 @@ const grid: Component<{}> = (props) => {
     <div class='p-5'>
       <h3>Colored Grids</h3>
       <label for='cells'>Set number of cells (1-10k)</label>
-      <input id='cells' type='number' value='5000' min='1' max='10000' />
-      <svg ref={svgEl} height={height} width={width} class='rect'></svg>
+      <input ref={input} id='cells' type='number' value='5000' min='1' max='10000' />
       <canvas ref={canvas} height={height} width={width} class='custom border' />
+      <svg ref={svgEl} height={height} width={width} class='rect'></svg>
     </div>
   )
 }
