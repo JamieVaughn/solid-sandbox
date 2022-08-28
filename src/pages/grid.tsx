@@ -4,6 +4,7 @@ import * as d3 from 'd3'
 const grid: Component<{}> = (props) => {
   let canvas,
     ctx,
+    hiddenCanvas,
     svgEl,
     input,
     className = 'rect'
@@ -82,7 +83,7 @@ const grid: Component<{}> = (props) => {
     })
   }
 
-  const draw = () => {
+  const draw = (curCanvas = canvas, hidden = false) => {
     ctx.clearRect(0, 0, width, height)
     let svg = d3.select(svgEl)
     let els = svg.selectAll(className)
@@ -94,12 +95,32 @@ const grid: Component<{}> = (props) => {
     })
     ctx.stroke()
   }
+  let numRgbBytes = 16777215
+  let rgbBytes = 0xffffff
+  // let pixels = d3.range(numRgbBytes)
+  // console.log(pixels[200], pixels[2000], pixels[20000])
+  // console.log(pixels[200000] % 256, (pixels[200000] / 256) % 256, (pixels[200000] / 65536) % 256) // less performant and yeilds decimals, compared to bitwise below
+  // let bits = d3.range(rgbBytes)
+  // console.log(bits[200])
+  // console.log(pixels[200000] & 0xff, (pixels[200000] & 0xff00) >> 8, (pixels[200000] & 0xff0000) >> 16)
+
+  function genColorFromPos(buffer = 1) {
+    let ret = []
+    if (buffer < rgbBytes) {
+      ret.push(buffer & 0xff) // R
+      ret.push((buffer & 0xff00) >> 8) // G
+      ret.push((buffer & 0xff0000) >> 16) // B
+    }
+    return `rgb(${ret.join(',')})`
+  }
+
   return (
     <div class='p-5'>
       <h3>Colored Grids</h3>
       <label for='cells'>Set number of cells (1-10k)</label>
       <input ref={input} id='cells' type='number' value='5000' min='1' max='10000' />
       <canvas ref={canvas} height={height} width={width} class='custom border' />
+      <canvas ref={hiddenCanvas} height={height} width={width} style={{ display: 'block' }} />
       <svg ref={svgEl} height={height} width={width} class='rect'></svg>
     </div>
   )
