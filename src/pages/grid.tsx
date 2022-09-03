@@ -7,6 +7,7 @@ const grid: Component<{}> = (props) => {
     hiddenCanvas,
     hiddenCtx,
     svgEl,
+    tooltip,
     input,
     className = 'rect',
     colorToNode = {}
@@ -104,7 +105,18 @@ const grid: Component<{}> = (props) => {
       const colorKey = `rgb(${color[0]}, ${color[1]}, ${color[2]})`
       const node = colorToNode[colorKey]
       // console.log('hidden', e, mouseX, mouseY)
-      console.log('map', color, node)
+      console.log('map', colorKey)
+      if (node) {
+        // Show the tooltip
+        d3.select(tooltip)
+          .style('opacity', 0.8)
+          .style('top', e.pageY + 5 + 'px')
+          .style('left', e.pageX + 5 + 'px')
+          .html(colorKey)
+      } else {
+        // Hide the tooltip
+        d3.select(tooltip).style('opacity', 0)
+      }
     })
   }
 
@@ -144,13 +156,16 @@ const grid: Component<{}> = (props) => {
   }
 
   return (
-    <div class='p-5'>
+    <div class='p-5 relative'>
       <h3>Colored Grids</h3>
       <label for='cells'>Set number of cells (1-10k)</label>
       <input ref={input} id='cells' type='number' value='5000' min='1' max='10000' />
       <canvas ref={canvas} height={height} width={width} class='custom border' />
       <canvas ref={hiddenCanvas} height={height} width={width} style={{ display: 'block' }} />
       {/* <svg ref={svgEl} height={height} width={width} class='rect'></svg> */}
+      <span ref={tooltip} style={{ position: 'absolute' }}>
+        .
+      </span>
     </div>
   )
 }
