@@ -159,11 +159,31 @@ const grid: Component<{}> = (props) => {
     <div class='p-5 relative'>
       <h3>Colored Grids</h3>
       <label for='cells'>Set number of cells (1-10k)</label>
-      <input ref={input} id='cells' type='number' value='5000' min='1' max='10000' />
-      <canvas ref={canvas} height={height} width={width} class='custom border' />
-      <canvas ref={hiddenCanvas} height={height} width={width} style={{ display: 'block' }} />
+      <input
+        ref={input}
+        id='cells'
+        type='number'
+        value='5000'
+        min='1'
+        max='10000'
+      />
+      <canvas
+        ref={canvas}
+        height={height}
+        width={width}
+        class='custom border'
+      />
+      <canvas
+        ref={hiddenCanvas}
+        height={height}
+        width={width}
+        style={{ display: 'block' }}
+      />
       {/* <svg ref={svgEl} height={height} width={width} class='rect'></svg> */}
-      <span ref={tooltip} style={{ position: 'absolute' }}>
+      <span
+        ref={tooltip}
+        style={{ position: 'absolute' }}
+      >
         .
       </span>
     </div>

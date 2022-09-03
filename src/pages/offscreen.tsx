@@ -9,7 +9,7 @@ const offscreen: Component<{}> = (props) => {
     tooltip,
     input,
     colorToNode = {}
-  const [data, setData] = createSignal(Array.from({ length: 5000 }).map((item, i) => ({ value: i })))
+  const [data, setData] = createSignal(Array.from({ length: 5000 }).map((_, i) => ({ value: i })))
   let width = 750,
     height = 400,
     groupSpacing = 4,
@@ -23,77 +23,32 @@ const offscreen: Component<{}> = (props) => {
   onMount(() => {
     ctx = canvas.getContext('2d')
     hiddenCtx = hiddenCanvas.getContext('2d')
-
-    // databind(data, hiddenCanvas)
-    // let timer = d3.timer((elapsed) => {
-    //   drawWithContext(canvas, false)
-    //   if (elapsed > 300) timer.stop()
-    // })
     drawWithContext(ctx, false)
+    drawWithContext(hiddenCtx, true)
   })
-  const databind = (data, curCanvas = canvas) => {
-    let base = document.createElement('custom')
-    d3.select(curCanvas)
-    // var enterSel = join
-    //   .enter()
-    //   .attr('x', (d, i) => {
-    //     var x0 = Math.floor(i / 100) % 10,
-    //       x1 = Math.floor(i % 10)
-    //     return groupSpacing * x0 + (cellSpacing + cellSize) * (x1 + x0 * 10)
-    //   })
-    //   .attr('y', (d, i) => {
-    //     var y0 = Math.floor(i / 1000),
-    //       y1 = Math.floor((i % 100) / 10)
-    //     return groupSpacing * y0 + (cellSpacing + cellSize) * (y1 + y0 * 10)
-    //   })
-    //   .attr('width', 0)
-    //   .attr('height', 0)
-
-    // join
-    //   .merge(enterSel)
-    //   .transition()
-    //   .attr('width', cellSize)
-    //   .attr('height', cellSize)
-    //   .attr('fillStyle', (d) => {
-    //     // console.log('color', d, i)
-    //     // return spectral(d.value)
-    //     // return interpolate(d.value)
-    //     // console.log('data', data, d)
-    //     return d3.scaleSequential(d3.interpolateSpectral).domain(d3.extent(data, (d) => d.value))
-    //   })
-    // .attr('fillStyleHidden', (d, i) => {
-    //   if (!d.hiddenCol) {
-    //     d.hiddenCol = genColorFromPos(i)
-    //     colorToNode[d.hiddenCol] = d
-    //   }
-    //   return d.hiddenCol
-    // })
-    // console.log('hash', colorToNode)
-    // let exitSel = join.exit().transition().attr('width', 0).attr('height', 0).remove()
-  }
 
   const colorProviderX = (i) => {
     let x0 = Math.floor(i / 100) % 10,
       x1 = Math.floor(i % 10)
-    return groupSpacing * x0 + (cellSpacing + cellSize) * (x1 + x0 * 10)
+    const cell = groupSpacing * x0 + (cellSpacing + cellSize) * (x1 + x0 * 10)
+    return cell
   }
   const colorProviderY = (i) => {
     let y0 = Math.floor(i / 1000),
       y1 = Math.floor((i % 100) / 10)
-    return groupSpacing * y0 + (cellSpacing + cellSize) * (y1 + y0 * 10)
+    const cell = groupSpacing * y0 + (cellSpacing + cellSize) * (y1 + y0 * 10)
+    return cell
   }
 
   const drawWithContext = (context = ctx, hidden = false) => {
     context.clearRect(0, 0, width, height)
     data().forEach((d, i) => {
-      context.fillRect(colorProviderX(d.value), colorProviderY(d.value), width, height)
+      context.fillRect(colorProviderX(d.value), colorProviderY(d.value), cellSize, cellSize)
       let color = hidden ? genColorFromPos(d.value) : colorScale(d.value)
       context.fillStyle = color
       context.stroke()
     })
   }
-
-  // drawWithContext(hiddenCanvas, true)
 
   let numRgbBytes = 16777215
   let rgbBytes = 0xffffff
@@ -124,10 +79,7 @@ const offscreen: Component<{}> = (props) => {
       } else {
         setData(Array.from({ length: +e.currentTarget.value }).map((v, i) => ({ value: i })))
         console.log(data())
-        // var t = d3.timer(function (elapsed) {
-        //   drawWithContext()
-        //   if (elapsed > 300) t.stop()
-        // })
+
         drawWithContext(ctx, false)
       }
     }
