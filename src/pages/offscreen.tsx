@@ -158,12 +158,33 @@ const offscreen: Component<{}> = (props) => {
     <div class='p-5 relative'>
       <h3>Offscreen Canvas for tooltip</h3>
       <label for='cells'>Set number of cells (1-10k)</label>
-      <input ref={input} type='number' value='5000' min='1' max='10000' onKeyDown={handleEnter} />
+      <input
+        ref={input}
+        type='number'
+        value='5000'
+        min='1'
+        max='10000'
+        onKeyDown={handleEnter}
+      />
       <div class='container'>
-        <canvas class='custom border' ref={canvas} height={height} width={width} onMouseMove={handleMouseMove} />
+        <canvas
+          class='custom border'
+          ref={canvas}
+          height={height}
+          width={width}
+          onMouseMove={handleMouseMove}
+        />
       </div>
-      <canvas ref={hiddenCanvas} height={height} width={width} style={{ display: 'block' }} />
-      <span ref={tooltip} style={{ position: 'absolute' }}>
+      <canvas
+        ref={hiddenCanvas}
+        height={height}
+        width={width}
+        style={{ display: 'block' }}
+      />
+      <span
+        ref={tooltip}
+        style={{ position: 'absolute' }}
+      >
         .
       </span>
     </div>
