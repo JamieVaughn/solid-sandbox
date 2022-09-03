@@ -5,9 +5,11 @@ const grid: Component<{}> = (props) => {
   let canvas,
     ctx,
     hiddenCanvas,
+    hiddenCtx,
     svgEl,
     input,
-    className = 'rect'
+    className = 'rect',
+    colorToNode = {}
   const data = d3.range(5000).map((i) => ({ value: i }))
   let width = 750,
     height = 400,
@@ -21,20 +23,25 @@ const grid: Component<{}> = (props) => {
   // const spectral = d3.scaleDiverging(d3.interpolateSpectral)
   onMount(() => {
     ctx = canvas.getContext('2d')
+    hiddenCtx = hiddenCanvas.getContext('2d')
+
     databind(data)
+    // databind(data, hiddenCanvas)
     let timer = d3.timer((elapsed) => {
-      draw()
+      draw(canvas, false)
       if (elapsed > 300) timer.stop()
     })
     // draw()
   })
-  const databind = (data) => {
-    let svg = d3.select(svgEl)
-    let join = svg.selectAll(className).data(data)
+  const databind = (data, curCanvas = canvas) => {
+    // let svg = d3.select(svgEl)
+    let cnvs = d3.select(curCanvas)
+    // let joinsvg = svg.selectAll(className).data(data)
+    let join = cnvs.selectAll(`canvas-${className}`).data(data)
     var enterSel = join
       .enter()
-      .append(className)
-      .attr('class', className)
+      .append(`canvas-${className}`)
+      .attr('class', `canvas-${className}`)
       .attr('x', (d, i) => {
         var x0 = Math.floor(i / 100) % 10,
           x1 = Math.floor(i % 10)
@@ -60,6 +67,14 @@ const grid: Component<{}> = (props) => {
         // console.log('data', data, d)
         return d3.scaleSequential(d3.interpolateSpectral).domain(d3.extent(data, (d) => d.value))
       })
+      .attr('fillStyleHidden', (d, i) => {
+        if (!d.hiddenCol) {
+          d.hiddenCol = genColorFromPos(i)
+          colorToNode[d.hiddenCol] = d
+        }
+        return d.hiddenCol
+      })
+    // console.log('hash', colorToNode)
     let exitSel = join.exit().transition().attr('width', 0).attr('height', 0).remove()
 
     d3.select(input).on('keydown', (e) => {
@@ -81,20 +96,34 @@ const grid: Component<{}> = (props) => {
         }
       }
     })
+
+    d3.select(canvas).on('mousemove', (e) => {
+      const mouseX = e.offsetX
+      const mouseY = e.offsetY
+      const color = hiddenCtx.getImageData(mouseX, mouseY, 1, 1).data
+      const colorKey = `rgb(${color[0]}, ${color[1]}, ${color[2]})`
+      const node = colorToNode[colorKey]
+      // console.log('hidden', e, mouseX, mouseY)
+      console.log('map', color, node)
+    })
   }
 
   const draw = (curCanvas = canvas, hidden = false) => {
-    ctx.clearRect(0, 0, width, height)
-    let svg = d3.select(svgEl)
-    let els = svg.selectAll(className)
+    // ctx.clearRect(0, 0, width, height)
+    // const curCtx = hidden ? hiddenCtx : ctx
+    let svg = d3.select(curCanvas)
+    let els = svg.selectAll(`canvas-${className}`)
     els.each(function (d, i) {
       let node = d3.select(this)
-      // ctx.fillStyle = node.attr('fillStyle')
-      ctx.fillStyle = colorScale(d.value)
+      ctx.fillStyle = hidden ? node.attr('fillStyleHidden') : node.attr('fillStyle')
+      ctx.fillStyle = hidden ? genColorFromPos(i) : colorScale(d.value)
       ctx.fillRect(node.attr('x'), node.attr('y'), node.attr('width'), node.attr('height'))
     })
     ctx.stroke()
   }
+
+  // draw(hiddenCanvas, true)
+
   let numRgbBytes = 16777215
   let rgbBytes = 0xffffff
   // let pixels = d3.range(numRgbBytes)
@@ -121,7 +150,7 @@ const grid: Component<{}> = (props) => {
       <input ref={input} id='cells' type='number' value='5000' min='1' max='10000' />
       <canvas ref={canvas} height={height} width={width} class='custom border' />
       <canvas ref={hiddenCanvas} height={height} width={width} style={{ display: 'block' }} />
-      <svg ref={svgEl} height={height} width={width} class='rect'></svg>
+      {/* <svg ref={svgEl} height={height} width={width} class='rect'></svg> */}
     </div>
   )
 }
