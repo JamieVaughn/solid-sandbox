@@ -100,7 +100,7 @@ const offscreen: Component<{}> = (props) => {
       // Show the tooltip
       tooltip.style.setProperty('opacity', 0.8)
       console.log(mouseX, mouseY)
-      // tooltip.style.setProperty('transform', `translate(${e.mouseX}px, ${e.mouseY}px)`)
+      // tooltip.style.setProperty('transform', `translate(${mouseX}px, ${mouseY}px)`)
       tooltip.style.transform = `translate(${mouseX + 10}px, ${mouseY + 150}px)`
       setTooltipContent(node)
     } else {

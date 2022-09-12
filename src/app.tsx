@@ -17,7 +17,19 @@ const App: Component = () => {
   const location = useLocation()
   const Route = useRoutes(routes)
 
-  const pages = ['home', 'about', 'error', 'stargazers', 'repos', 'saved repos', 'store', 'canvas', 'grid', 'offscreen']
+  const pages = [
+    'home',
+    'about',
+    'error',
+    'stargazers',
+    'repos',
+    'saved repos',
+    'store',
+    'canvas',
+    'grid',
+    'offscreen',
+    'conway',
+  ]
 
   return (
     <div class='wrapper'>
@@ -29,7 +41,10 @@ const App: Component = () => {
               const path = item === 'home' ? '' : item.replace(' ', '')
               return (
                 <li class='py-1 px-2 capitalize'>
-                  <Link href={`/${path}`} class='no-underline hover:underline'>
+                  <Link
+                    href={`/${path}`}
+                    class='no-underline hover:underline'
+                  >
                     {item} {item === 'saved repos' ? `(${savedRepos().length})` : ''}
                   </Link>
                 </li>
@@ -39,7 +54,12 @@ const App: Component = () => {
 
           <li class='text-sm flex items-center order-first'>
             <span>URL:</span>
-            <input class='bg-white text-sm rounded-lg' type='text' readOnly value={location.pathname} />
+            <input
+              class='bg-white text-sm rounded-lg'
+              type='text'
+              readOnly
+              value={location.pathname}
+            />
           </li>
         </ul>
       </nav>
