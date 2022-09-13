@@ -29,6 +29,7 @@ const App: Component = () => {
     'grid',
     'offscreen',
     'conway',
+    'smoothlife',
   ]
 
   return (

@@ -12,8 +12,8 @@ const conway: Component<{}> = (props) => {
     groupSpacing = 0,
     cellSpacing = 1,
     cellSize = side / cols - cellSpacing,
-    limit = 100
-  console.log(cols)
+    limit = 500
+
   /* 
   DEFAULT RULES: 
   Any live cell with 2 or 3 live neighbors => live

@@ -47,6 +47,10 @@ export const routes: RouteDefinition[] = [
     path: '/conway',
     component: lazy(() => import('./pages/conway')),
   },
+  {
+    path: '/smoothlife',
+    component: lazy(() => import('./pages/smoothlife')),
+  },
   // {
   //   path: '/detail',
   //   component: lazy(() => import('./pages/store')),
