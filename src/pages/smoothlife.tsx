@@ -8,7 +8,7 @@ const smoothlife: Component<{}> = (props) => {
   const [cells, setCells] = createSignal(
     Array.from({ length: cols ** 2 }).map((_, i) => ({
       value: i - 1,
-      valence: Math.random() > 0.5 ? trunc(Math.random()) : 1,
+      valence: i > 0 && i < 400 ? trunc(Math.random()) : 0,
       nucleus: [0, 0],
     }))
   )
@@ -21,22 +21,25 @@ const smoothlife: Component<{}> = (props) => {
     cellSize = side / cols - cellSpacing,
     limit = 500
   /* 
-  DEFAULT RULES: 
-  Any live cell with 2 or 3 live neighbors => live
-  Any dead cell with 3 live neighbors => live
-  Any other dead OR live cell => dead 
+  Initial Conditions: 
+  m, n, o, p, q 
   */
+  const initConditions = [
+    { m: 0.5, l: 0.75, n: 0.25, o: 0.33, p: 0.35, q: 0.51 }, // snowflakes
+    { m: 0.5, l: 0.75, n: 0.15, o: 0.63, p: 0.25, q: 0.951 }, // arrow gliders
+  ]
   const nextStatus = (valence, inner: number, outer: number) => {
+    const conditions = initConditions[1]
     const center = inner
     const shell = outer
-    const m = center < 0.5
-    const l = center > 0.75
-    const n = shell > 0.25 // 0.15 // .25
-    const o = shell < 0.33 //0.63 // .33
-    const p = shell > 0.35 //0.25 //.35
-    const q = shell < 0.51 //0.951 // .51
+    const m = center < conditions.m
+    const l = center > conditions.l
+    const n = shell > conditions.n
+    const o = shell < conditions.o
+    const p = shell > conditions.p
+    const q = shell < conditions.q
     const live = (m && n && o) || (!m && p && q)
-    return live && inner < outer ? clamp(1 - valence) : clamp(valence / 1.2)
+    return live && inner !== valence && outer !== valence ? clamp(1 - valence ** 0.2) : clamp(valence / 1.4)
   }
 
   onCleanup(() => (timer ? clearInterval(timer) : null))
@@ -74,13 +77,13 @@ const smoothlife: Component<{}> = (props) => {
             arr[j - factor * cols - 2]?.valence, // NW
             arr[j - factor * cols - 1]?.valence, // NNW
             arr[j - factor * cols]?.valence, // N
-            arr[j - factor * cols + 1]?.valence, // NNE
-            arr[j - factor * cols + 2]?.valence, // NE
-            arr[j - cols + 2]?.valence, // ENE
-            arr[j + factor]?.valence, // E
-            arr[j + cols + 2]?.valence, // ESE
-            arr[j + factor * cols + 2]?.valence, // SE
-            arr[j + factor * cols + 1]?.valence, // SSE
+            // arr[j - factor * cols + 1]?.valence, // NNE
+            // arr[j - factor * cols + 2]?.valence, // NE
+            // arr[j - cols + 2]?.valence, // ENE
+            // arr[j + factor]?.valence, // E
+            // arr[j + cols + 2]?.valence, // ESE
+            // arr[j + factor * cols + 2]?.valence, // SE
+            // arr[j + factor * cols + 1]?.valence, // SSE
             arr[j + factor * cols]?.valence, // S
             arr[j + factor * cols - 1]?.valence, // SSW
             arr[j + factor * cols - 2]?.valence, // SW
@@ -114,7 +117,7 @@ const smoothlife: Component<{}> = (props) => {
 
   return (
     <div style={{ padding: '1rem' }}>
-      <h1>Conway's Game of Life in Canvas</h1>
+      <h1>Smooth Life in Canvas</h1>
       <h3>Iteration: {iter()}</h3>
       <label for='cells'>
         Cells:{' '}
