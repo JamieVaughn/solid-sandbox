@@ -11,7 +11,7 @@ import { routes } from './routes'
 // import StorePage from './components/StorePage';
 // import ProductDetail from './pages/store/[id]';
 // import Header from './components/Header';
-// import './index.css'
+import './index.css'
 
 const App: Component = () => {
   const location = useLocation()
