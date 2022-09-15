@@ -77,13 +77,13 @@ const smoothlife: Component<{}> = (props) => {
             arr[j - factor * cols - 2]?.valence, // NW
             arr[j - factor * cols - 1]?.valence, // NNW
             arr[j - factor * cols]?.valence, // N
-            // arr[j - factor * cols + 1]?.valence, // NNE
-            // arr[j - factor * cols + 2]?.valence, // NE
-            // arr[j - cols + 2]?.valence, // ENE
-            // arr[j + factor]?.valence, // E
-            // arr[j + cols + 2]?.valence, // ESE
-            // arr[j + factor * cols + 2]?.valence, // SE
-            // arr[j + factor * cols + 1]?.valence, // SSE
+            arr[j - factor * cols + 1]?.valence, // NNE
+            arr[j - factor * cols + 2]?.valence, // NE
+            arr[j - cols + 2]?.valence, // ENE
+            arr[j + factor]?.valence, // E
+            arr[j + cols + 2]?.valence, // ESE
+            arr[j + factor * cols + 2]?.valence, // SE
+            arr[j + factor * cols + 1]?.valence, // SSE
             arr[j + factor * cols]?.valence, // S
             arr[j + factor * cols - 1]?.valence, // SSW
             arr[j + factor * cols - 2]?.valence, // SW
