@@ -33,6 +33,12 @@ export default function Home() {
     const result = reader.readAsDataURL(file)
   }
 
+  const handleUpload = (e) => {
+    console.log('input', e)
+    const fileList = Array.from(e.target.files)
+    setFilenames(filenames().concat(fileList))
+  }
+
   return (
     <section class='text-gray-300 p-8'>
       <h1 class='text-2xl font-bold'>Home Page</h1>
@@ -55,6 +61,16 @@ export default function Home() {
         </button>
       </div>
       <h2>File Uploader:</h2>
+      <input
+        type='file'
+        multiple
+        onChange={handleUpload}
+      />
+      <input
+        type='file'
+        webkitdirectory={true}
+        onChange={handleUpload}
+      />
       <div
         classList={{ dropzone: true, draggedOver: hovering() }}
         onDragEnter={dragEnterHandler}
