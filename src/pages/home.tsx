@@ -1,9 +1,10 @@
-import { createSignal, For } from 'solid-js'
+import { createSignal, For, Show } from 'solid-js'
 
 export default function Home() {
   const [count, setCount] = createSignal(0)
   const [filenames, setFilenames] = createSignal([])
   const [hovering, setHovering] = createSignal(false)
+  const [imgSrc, setImgSrc] = createSignal({})
 
   const dragEnterHandler = (e) => setHovering(true)
   const dragLeaveHandler = (e) => setHovering(false)
@@ -20,6 +21,16 @@ export default function Home() {
     const fileList = Array.from(e.dataTransfer.files)
     console.log(fileList)
     setFilenames(filenames().concat(fileList))
+  }
+
+  const handleImgLoad = (file) => {
+    if (!file.type.includes('image')) return
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      setImgSrc((prev) => ({ ...prev, [file.name]: e.target.result }))
+      console.log('onload', imgSrc())
+    }
+    const result = reader.readAsDataURL(file)
   }
 
   return (
@@ -54,7 +65,18 @@ export default function Home() {
       <ul>
         <For each={filenames()}>
           {(file) => {
-            return <li>{file.name}</li>
+            handleImgLoad(file)
+            return (
+              <>
+                {/* <li onClick={() => (file.type.includes('image') && !(file.name in imgSrc()) ? handleImg(file) : null)}> */}
+                <li>{file.name}</li>
+                <Show when={file.name in imgSrc()}>
+                  <li>
+                    <img src={imgSrc()[file.name]} />
+                  </li>
+                </Show>
+              </>
+            )
           }}
         </For>
       </ul>
