@@ -51,6 +51,10 @@ export const routes: RouteDefinition[] = [
     path: '/smoothlife',
     component: lazy(() => import('./pages/smoothlife')),
   },
+  {
+    path: '/machine',
+    component: lazy(() => import('./pages/machine')),
+  },
   // {
   //   path: '/detail',
   //   component: lazy(() => import('./pages/store')),

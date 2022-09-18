@@ -30,6 +30,7 @@ const App: Component = () => {
     'offscreen',
     'conway',
     'smoothlife',
+    'machine',
   ]
 
   return (
