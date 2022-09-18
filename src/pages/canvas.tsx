@@ -19,7 +19,6 @@ const Canvas: Component<{}> = (props) => {
     document.addEventListener('mouseup', handleGlobalMouseUp)
     ctx = canvas.getContext('2d')
     ctx.strokeStyle = color()
-    // ctx.fillRect(100,100,300,300)
     // ctx.beginPath();
     // ctx.moveTo(100,100)
     // ctx.lineTo(200,100)
@@ -38,6 +37,7 @@ const Canvas: Component<{}> = (props) => {
         ctx.fillRect(x, y, 1, 1)
       }
     }
+
     ctx.stroke()
   })
 
@@ -74,14 +74,10 @@ const Canvas: Component<{}> = (props) => {
   }
 
   const makeitBlack = (context = ctx) => {
-    console.log('black', ctx)
-    context.color = 'black'
-    context.fillReact(0, 0, dim().width, dim().height)
+    console.log('black', ctx, context, color())
+    context.fillStyle = 'black'
+    context.fillRect(0, 0, dim().width, dim().height)
     context.stroke()
-  }
-
-  const enableGlow = () => {
-    setBlur((prev) => !prev)
   }
 
   return (
@@ -114,7 +110,7 @@ const Canvas: Component<{}> = (props) => {
             <input
               id='glow'
               type='checkbox'
-              onClick={enableGlow}
+              onInput={() => setBlur((prev) => !prev)}
             />{' '}
             Glow
           </label>
