@@ -1,5 +1,5 @@
-import type { Component } from 'solid-js'
-import { createEffect, For } from 'solid-js'
+import { Component, createSignal, onCleanup, onMount, For } from 'solid-js'
+import { createStore } from 'solid-js/store'
 import { Link, useRoutes, Route, Routes, useLocation, Outlet } from 'solid-app-router'
 import { savedRepos } from './components/SavedRepos'
 
@@ -12,10 +12,37 @@ import { routes } from './routes'
 // import ProductDetail from './pages/store/[id]';
 // import Header from './components/Header';
 import './index.css'
+import { preview } from 'vite'
+
+const [store, setStore] = createStore({
+  users: [] as { name: string }[],
+})
+
+function dispatch(action: unknown) {}
+
+function reducer() {}
 
 const App: Component = () => {
   const location = useLocation()
   const Route = useRoutes(routes)
+  const [xy, setXy] = createSignal({ x: 0, y: 0, show: false })
+
+  const handleMouseMove = (e) => {
+    setXy({ x: e.clientX, y: e.clientY, show: true })
+  }
+  const handleMouseTransition = (e) => {
+    setXy((prev) => ({ ...prev, show: e.type === 'mouseenter' }))
+  }
+  onMount(() => {
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseenter', handleMouseTransition)
+    document.addEventListener('mouseleave', handleMouseTransition)
+  })
+  onCleanup(() => {
+    document.removeEventListener('mousemove', handleMouseMove)
+    document.removeEventListener('mouseenter', handleMouseTransition)
+    document.removeEventListener('mouseleave', handleMouseTransition)
+  })
 
   const pages = [
     'home',
@@ -69,6 +96,17 @@ const App: Component = () => {
       <main>
         <Route />
       </main>
+      <div
+        style={{
+          visibility: xy().show ? 'visible' : 'hidden',
+          position: 'fixed',
+          // top: xy().y + 'px',
+          // left: xy().x + 'px',
+          transform: `translate(${xy().x - 5}px, ${xy().y + 5}px)`,
+        }}
+      >
+        👆
+      </div>
     </div>
   )
 }
