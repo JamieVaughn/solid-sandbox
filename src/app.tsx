@@ -58,6 +58,7 @@ const App: Component = () => {
     'conway',
     'smoothlife',
     'machine',
+    'indexdb',
   ]
 
   return (
